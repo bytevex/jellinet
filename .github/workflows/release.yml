@@ -47,7 +47,12 @@ jobs:
         run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
 
       - name: Build plugin
-        run: dotnet build "$PROJECT_PATH" -c Release
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          dotnet build "$PROJECT_PATH" -c Release \
+            -p:Version="$VERSION" \
+            -p:AssemblyVersion="$VERSION" \
+            -p:FileVersion="$VERSION"
 
       - name: Package plugin zip
         id: package
