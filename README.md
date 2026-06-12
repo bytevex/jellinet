@@ -159,7 +159,7 @@ jellinet/
 │   └── manifest.json                 # Jellyfin plugin-repo manifest (auto-bijgewerkt)
 └── src/
     └── Jellyfin.Plugin.NetflixRows/
-        ├── build.yaml                # plugin metadata (gebruikt door jprm)
+        ├── build.yaml                # plugin metadata / changelog (referentie)
         ├── Jellyfin.Plugin.NetflixRows.csproj
         ├── Plugin.cs
         ├── PluginServiceRegistrator.cs
@@ -396,14 +396,15 @@ Deze repo is al voorbereid:
 
 - `.gitignore` (build-output wordt niet meegecommit)
 - `.github/workflows/release.yml` — GitHub Actions workflow die bij het
-  pushen van een **versie-tag** (`v1.0.0.0`) automatisch:
-  1. de plugin bouwt (`dotnet build`),
-  2. een release-zip maakt met **jprm** (Jellyfin Plugin Repository Manager),
+  pushen van een **versie-tag** (`v1.0.1.0`) automatisch:
+  1. de plugin bouwt (`dotnet build -c Release`),
+  2. de DLL inpakt in een release-zip (`zip`),
   3. een **GitHub Release** aanmaakt met die zip als asset,
-  4. `repository/manifest.json` bijwerkt (versie, checksum, download-URL) en
-     terug commit naar `master`.
+  4. `repository/manifest.json` bijwerkt (versie, MD5-checksum, download-URL,
+     timestamp via `jq`) en terug commit naar `master`.
 - `repository/manifest.json` — start leeg (`[]`), wordt door de workflow
-  gevuld.
+  gevuld/bijgewerkt (bestaande versies blijven behouden, dezelfde versie
+  wordt vervangen bij een re-release).
 
 ### Repository
 
@@ -445,10 +446,10 @@ De code staat op: **https://github.com/bytevex/jellinet** (branch `master`).
    `repository/manifest.json` — bestaande gebruikers zien de update in
    **Dashboard → Plugins → Catalog**.
 
-> **Let op (vibe-coded disclaimer, zie boven):** de `jprm`-commando's in de
-> workflow (`jprm plugin build`, `jprm repo add`) zijn gebaseerd op de
-> gepubliceerde werking van
-> [jprm](https://github.com/oddstr13/jellyfin-plugin-repository-manager) maar
-> zijn niet end-to-end getest. Als de workflow faalt, check de exacte
-> CLI-flags met `jprm plugin build --help` / `jprm repo add --help` in de
-> Actions-log en pas `release.yml` aan.
+> **Let op (vibe-coded disclaimer, zie boven):** de workflow gebruikt `dotnet
+> build`, `zip`, `md5sum` en `jq` (alle drie standaard aanwezig op
+> `ubuntu-latest` runners) om de release-zip en `repository/manifest.json` te
+> bouwen — bewust geen externe tools zoals `jprm`, om de stappen makkelijk
+> lokaal te kunnen reproduceren en debuggen. Bij een gefaalde run: bekijk de
+> "Build plugin package" / "Update repository manifest" stap in de
+> Actions-log.
