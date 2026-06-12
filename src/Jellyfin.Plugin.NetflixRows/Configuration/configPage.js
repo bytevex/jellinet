@@ -150,6 +150,7 @@ export default class NetflixRowsConfigPage {
 
                 view.querySelector('#EnableHomeScreenSectionsIntegration').checked = !!config.EnableHomeScreenSectionsIntegration;
                 view.querySelector('#EnableWebInjection').checked = !!config.EnableWebInjection;
+                view.querySelector('#HiddenHomeSections').value = (config.HiddenHomeSections || []).join('\n');
 
                 renderRows();
                 renderLibraries(config.LibraryFolderIds || []);
@@ -171,6 +172,11 @@ export default class NetflixRowsConfigPage {
 
                 config.EnableHomeScreenSectionsIntegration = view.querySelector('#EnableHomeScreenSectionsIntegration').checked;
                 config.EnableWebInjection = view.querySelector('#EnableWebInjection').checked;
+
+                config.HiddenHomeSections = view.querySelector('#HiddenHomeSections').value
+                    .split('\n')
+                    .map(function (s) { return s.trim(); })
+                    .filter(function (s) { return s.length > 0; });
 
                 ApiClient.updatePluginConfiguration(PluginId, config).then(function (result) {
                     Dashboard.processPluginConfigurationUpdateResult(result);

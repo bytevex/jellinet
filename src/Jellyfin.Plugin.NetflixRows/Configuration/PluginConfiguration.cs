@@ -92,8 +92,16 @@ namespace Jellyfin.Plugin.NetflixRows.Configuration
             new RowDefinition { Title = "😂 Komedie Films", Genres = new List<string> { "Comedy" }, MediaType = RowMediaType.Movies },
             new RowDefinition { Title = "👻 Horror Films", Genres = new List<string> { "Horror" }, MediaType = RowMediaType.Movies },
             new RowDefinition { Title = "🚀 Sci-Fi Films", Genres = new List<string> { "Science Fiction" }, MediaType = RowMediaType.Movies },
+            new RowDefinition { Title = "🗺️ Avontuur Films", Genres = new List<string> { "Adventure" }, MediaType = RowMediaType.Movies },
+            new RowDefinition { Title = "🐉 Fantasy Films", Genres = new List<string> { "Fantasy" }, MediaType = RowMediaType.Movies },
+            new RowDefinition { Title = "💖 Romantiek Films", Genres = new List<string> { "Romance" }, MediaType = RowMediaType.Movies },
+            new RowDefinition { Title = "🎬 Animatiefilms", Genres = new List<string> { "Animation" }, MediaType = RowMediaType.Movies },
             new RowDefinition { Title = "🎭 Drama Series", Genres = new List<string> { "Drama" }, MediaType = RowMediaType.Series },
-            new RowDefinition { Title = "🕵️ Crime Series", Genres = new List<string> { "Crime" }, MediaType = RowMediaType.Series }
+            new RowDefinition { Title = "🕵️ Crime Series", Genres = new List<string> { "Crime" }, MediaType = RowMediaType.Series },
+            new RowDefinition { Title = "🔎 Mysterie Series", Genres = new List<string> { "Mystery" }, MediaType = RowMediaType.Series },
+            new RowDefinition { Title = "👻 Horror Series", Genres = new List<string> { "Horror" }, MediaType = RowMediaType.Series },
+            new RowDefinition { Title = "🚀 Sci-Fi Series", Genres = new List<string> { "Science Fiction" }, MediaType = RowMediaType.Series },
+            new RowDefinition { Title = "👨‍👩‍👧 Familie Series", Genres = new List<string> { "Family" }, MediaType = RowMediaType.Series }
         };
 
         /// <summary>
@@ -107,5 +115,13 @@ namespace Jellyfin.Plugin.NetflixRows.Configuration
         /// fallback script/stylesheet into the Jellyfin web client's index.html.
         /// </summary>
         public bool EnableWebInjection { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a list of home screen section titles (as displayed on the
+        /// home page, e.g. "Onlangs toegevoegde films") that should be hidden by
+        /// the web injection script. Matching is case-insensitive and ignores
+        /// leading/trailing whitespace.
+        /// </summary>
+        public List<string> HiddenHomeSections { get; set; } = new();
     }
 }

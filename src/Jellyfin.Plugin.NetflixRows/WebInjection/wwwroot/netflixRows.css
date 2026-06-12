@@ -1,6 +1,7 @@
 /* NetflixRows web injection styles */
 
 .netflixRows-section {
+    position: relative;
     margin: 1.5em 0;
     padding: 0 4%;
 }
@@ -66,5 +67,46 @@
 @media (max-width: 600px) {
     .netflixRows-card {
         width: 130px;
+    }
+}
+
+.netflixRows-nav {
+    position: absolute;
+    top: 1.8em;
+    bottom: 0.5em;
+    width: 3em;
+    border: none;
+    color: #fff;
+    font-size: 1.4em;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.netflixRows-section:hover .netflixRows-nav {
+    opacity: 1;
+}
+
+.netflixRows-nav--prev {
+    left: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.6), transparent);
+    justify-content: flex-start;
+    padding-left: 0.5em;
+}
+
+.netflixRows-nav--next {
+    right: 0;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.6), transparent);
+    justify-content: flex-end;
+    padding-right: 0.5em;
+}
+
+@media (max-width: 600px) {
+    .netflixRows-nav {
+        display: none;
     }
 }

@@ -53,6 +53,46 @@
         return card;
     }
 
+    function addScrollNav(section, scroller) {
+        var prevButton = document.createElement('button');
+        prevButton.type = 'button';
+        prevButton.className = 'netflixRows-nav netflixRows-nav--prev';
+        prevButton.setAttribute('aria-label', 'Scroll left');
+        prevButton.innerHTML = '&#10094;';
+
+        var nextButton = document.createElement('button');
+        nextButton.type = 'button';
+        nextButton.className = 'netflixRows-nav netflixRows-nav--next';
+        nextButton.setAttribute('aria-label', 'Scroll right');
+        nextButton.innerHTML = '&#10095;';
+
+        function scrollByPage(direction) {
+            var amount = scroller.clientWidth * 0.9 * direction;
+            scroller.scrollBy({ left: amount, behavior: 'smooth' });
+        }
+
+        prevButton.addEventListener('click', function () {
+            scrollByPage(-1);
+        });
+
+        nextButton.addEventListener('click', function () {
+            scrollByPage(1);
+        });
+
+        // Allow the mouse wheel (and trackpad vertical scroll) to scroll the row horizontally.
+        scroller.addEventListener('wheel', function (e) {
+            if (e.deltaY === 0) {
+                return;
+            }
+
+            e.preventDefault();
+            scroller.scrollBy({ left: e.deltaY });
+        }, { passive: false });
+
+        section.appendChild(prevButton);
+        section.appendChild(nextButton);
+    }
+
     function buildRow(rowSummary, apiClient) {
         return authFetch(API_BASE + '/Rows/' + rowSummary.Id + '/Items')
             .then(function (items) {
@@ -77,6 +117,7 @@
                 });
 
                 section.appendChild(scroller);
+                addScrollNav(section, scroller);
                 return section;
             })
             .catch(function (err) {
@@ -91,6 +132,43 @@
         });
     }
 
+    function normalizeTitle(text) {
+        return String(text || '').replace(/\s+/g, ' ').trim().toLowerCase();
+    }
+
+    function hideConfiguredSections(container, hiddenTitles) {
+        if (!hiddenTitles || hiddenTitles.length === 0) {
+            return;
+        }
+
+        var normalizedHidden = hiddenTitles.map(normalizeTitle).filter(function (t) {
+            return t.length > 0;
+        });
+
+        if (normalizedHidden.length === 0) {
+            return;
+        }
+
+        Array.prototype.forEach.call(container.children, function (section) {
+            if (section.classList.contains(CONTAINER_CLASS)) {
+                // Never hide our own rows.
+                return;
+            }
+
+            var heading = section.querySelector('.sectionTitle, h2');
+            if (!heading) {
+                return;
+            }
+
+            var sectionTitle = normalizeTitle(heading.textContent);
+            if (normalizedHidden.indexOf(sectionTitle) !== -1) {
+                section.style.display = 'none';
+            }
+        });
+    }
+
+    var injectionToken = 0;
+
     function injectRows() {
         var container = findHomeSectionsContainer();
         if (!container) {
@@ -102,22 +180,38 @@
             return;
         }
 
-        authFetch(API_BASE + '/Rows')
-            .then(function (rows) {
+        var token = ++injectionToken;
+
+        Promise.all([
+            authFetch(API_BASE + '/Rows'),
+            authFetch(API_BASE + '/HiddenSections').catch(function () { return []; })
+        ])
+            .then(function (results) {
+                var rows = results[0] || [];
+                var hiddenTitles = results[1] || [];
+
+                return Promise.all(rows.map(function (row) {
+                    return buildRow(row, apiClient);
+                })).then(function (sections) {
+                    return { sections: sections, hiddenTitles: hiddenTitles };
+                });
+            })
+            .then(function (result) {
+                // If a newer injection pass has started in the meantime, discard
+                // this (stale) result instead of appending duplicate rows.
+                if (token !== injectionToken) {
+                    return;
+                }
+
                 removeExistingRows(container);
 
-                var promises = rows.map(function (row) {
-                    return buildRow(row, apiClient);
-                });
-
-                return Promise.all(promises);
-            })
-            .then(function (sections) {
-                sections.forEach(function (section) {
+                result.sections.forEach(function (section) {
                     if (section) {
                         container.appendChild(section);
                     }
                 });
+
+                hideConfiguredSections(container, result.hiddenTitles);
             })
             .catch(function (err) {
                 console.error('NetflixRows: failed to load row list', err);

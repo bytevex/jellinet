@@ -93,6 +93,17 @@ namespace Jellyfin.Plugin.NetflixRows.Api
         }
 
         /// <summary>
+        /// Returns the configured list of home screen section titles that the web
+        /// injection script should hide (e.g. "Onlangs toegevoegde films").
+        /// </summary>
+        [HttpGet("HiddenSections")]
+        [Authorize]
+        public ActionResult<IEnumerable<string>> GetHiddenSections()
+        {
+            return Ok(Plugin.Instance!.Configuration.HiddenHomeSections);
+        }
+
+        /// <summary>
         /// Serves the small static JS/CSS assets used by the web injection fallback.
         /// Anonymous access is required because the script is loaded before login.
         /// </summary>
