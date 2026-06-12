@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Jellyfin.Data.Entities;
+using Jellyfin.Data.Enums;
 using Jellyfin.Plugin.NetflixRows.Api;
 using Jellyfin.Plugin.NetflixRows.Configuration;
 using MediaBrowser.Controller.Dto;

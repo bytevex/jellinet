@@ -1,6 +1,6 @@
 name: "Netflix Rows"
 guid: "a1b2c3d4-e5f6-4789-a012-b3c4d5e6f7a8"
-version: "1.0.0.0"
+version: "1.0.1.0"
 targetAbi: "10.10.0.0"
 framework: "net8.0"
 owner: "tywdj123"
@@ -15,6 +15,10 @@ category: "General"
 artifacts:
   - "Jellyfin.Plugin.NetflixRows.dll"
 changelog: |
+  ## 1.0.1.0
+  - Fix build: BaseItemKind/ItemSortBy/SortOrder zitten in Jellyfin.Data.Enums,
+    ontbrekende using toegevoegd in RowQueryService.
+
   ## 1.0.0.0
   - Eerste release: configureerbare genre-rijen, REST API, web injectie fallback,
     experimentele Home Screen Sections detectie.
