@@ -1,0 +1,14 @@
+# .NET build output
+bin/
+obj/
+
+# Editor / OS
+.vs/
+*.user
+.DS_Store
+
+# jprm output
+artifacts/
+
+# Local Claude Code settings
+.claude/

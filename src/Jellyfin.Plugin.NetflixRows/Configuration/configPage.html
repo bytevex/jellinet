@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Netflix Rows</title>
+</head>
+<body>
+    <div id="NetflixRowsConfigPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-button,emby-checkbox,emby-select,emby-collapse">
+        <div data-role="content">
+            <div class="content-primary">
+                <form id="NetflixRowsConfigForm" style="max-width: 60em; margin: auto;">
+
+                    <div class="verticalSection">
+                        <h2>Netflix Rows</h2>
+                        <p>
+                            Configureer dynamische genre-rijen voor de Jellyfin homepage.
+                            Nieuwe films/series met matchende genres verschijnen automatisch
+                            in de juiste rij na een library scan.
+                        </p>
+                    </div>
+
+                    <div class="verticalSection">
+                        <h3>Bibliotheken</h3>
+                        <p>Welke bibliotheken moeten gebruikt worden? Leeg = alle bibliotheken.</p>
+                        <div id="LibraryCheckboxes"></div>
+                    </div>
+
+                    <div class="verticalSection">
+                        <h3>Integratie</h3>
+                        <label style="display:block; margin-bottom: .5em;">
+                            <input type="checkbox" is="emby-checkbox" id="EnableHomeScreenSectionsIntegration" />
+                            <span>Probeer integratie met de "Home Screen Sections" plugin (indien geïnstalleerd)</span>
+                        </label>
+                        <label style="display:block;">
+                            <input type="checkbox" is="emby-checkbox" id="EnableWebInjection" />
+                            <span>Injecteer rijen via web client script (fallback, werkt zonder andere plugins)</span>
+                        </label>
+                    </div>
+
+                    <div class="verticalSection">
+                        <h3>Genre-rijen</h3>
+                        <div id="RowsContainer"></div>
+                        <button is="emby-button" type="button" id="AddRowButton" class="raised">
+                            <span>+ Nieuwe rij</span>
+                        </button>
+                    </div>
+
+                    <div>
+                        <button is="emby-button" type="submit" class="raised button-submit block">
+                            <span>Opslaan</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="configurationpage?name=NetflixRowsConfigPage.js"></script>
+</body>
+</html>

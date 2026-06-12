@@ -1,0 +1,70 @@
+/* NetflixRows web injection styles */
+
+.netflixRows-section {
+    margin: 1.5em 0;
+    padding: 0 4%;
+}
+
+.netflixRows-title {
+    margin: 0 0 0.5em 0;
+    font-weight: 600;
+    font-size: 1.2em;
+}
+
+.netflixRows-scroller {
+    display: flex;
+    overflow-x: auto;
+    gap: 0.8em;
+    padding-bottom: 0.5em;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.netflixRows-scroller::-webkit-scrollbar {
+    display: none;
+}
+
+.netflixRows-card {
+    flex: 0 0 auto;
+    width: 200px;
+    border-radius: 6px;
+    overflow: hidden;
+    display: block;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+}
+
+.netflixRows-card:hover,
+.netflixRows-card:focus {
+    transform: scale(1.06);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.netflixRows-card img {
+    width: 100%;
+    display: block;
+    border-radius: 6px;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    background: #1c1c1c;
+}
+
+.netflixRows-card--noimage {
+    background: #1c1c1c;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+}
+
+@media (max-width: 600px) {
+    .netflixRows-card {
+        width: 130px;
+    }
+}

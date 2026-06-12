@@ -1,0 +1,79 @@
+name: Build and release plugin
+
+# Triggered by pushing a version tag, e.g.:
+#   git tag v1.0.0.0
+#   git push origin v1.0.0.0
+#
+# Builds the plugin, attaches the zip to a GitHub Release, and updates
+# repository/manifest.json on the main branch so it can be used directly as
+# a Jellyfin plugin repository URL:
+#   https://raw.githubusercontent.com/<user>/<repo>/main/repository/manifest.json
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install jprm (Jellyfin Plugin Repository Manager)
+        run: pip install jprm
+
+      - name: Determine version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build plugin package
+        run: |
+          jprm plugin build src/Jellyfin.Plugin.NetflixRows \
+            --output artifacts \
+            --version "${{ steps.version.outputs.version }}"
+
+      - name: Locate built package
+        id: package
+        run: |
+          ZIP_PATH=$(find artifacts -maxdepth 1 -name '*.zip' | head -n1)
+          echo "path=$ZIP_PATH" >> "$GITHUB_OUTPUT"
+          echo "name=$(basename "$ZIP_PATH")" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          files: ${{ steps.package.outputs.path }}
+
+      - name: Update repository manifest
+        run: |
+          jprm repo add \
+            repository/manifest.json \
+            "${{ steps.package.outputs.path }}" \
+            --url "https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/${{ steps.package.outputs.name }}"
+
+      - name: Commit updated manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add repository/manifest.json
+          git diff --cached --quiet || git commit -m "Update plugin repository manifest for ${{ github.ref_name }}"
+          git push origin main
