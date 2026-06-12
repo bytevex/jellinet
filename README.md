@@ -150,11 +150,14 @@ na een normale library scan — er is geen extra scheduled task nodig.
 ```
 jellinet/
 ├── README.md
-├── build.yaml
+├── .github/
+│   └── workflows/
+│       └── release.yml               # build + GitHub Release + manifest update
 ├── repository/
-│   └── manifest.json                 # template voor een eigen plugin-repo
+│   └── manifest.json                 # Jellyfin plugin-repo manifest (auto-bijgewerkt)
 └── src/
     └── Jellyfin.Plugin.NetflixRows/
+        ├── build.yaml                # plugin metadata (gebruikt door jprm)
         ├── Jellyfin.Plugin.NetflixRows.csproj
         ├── Plugin.cs
         ├── PluginServiceRegistrator.cs
@@ -246,7 +249,7 @@ MD5-checksum van de zip (`Get-FileHash -Algorithm MD5 NetflixRows_1.0.0.0.zip`).
 
 1. In Jellyfin: **Dashboard → Plugins → Repositories → Add Repository**, voer
    de **raw GitHub-URL** naar `repository/manifest.json` in, bv.:
-   `https://raw.githubusercontent.com/<gebruiker>/<repo>/main/repository/manifest.json`
+   `https://raw.githubusercontent.com/<gebruiker>/<repo>/master/repository/manifest.json`
 2. Ga naar **Catalog**, zoek "Netflix Rows" en installeer.
 3. Herstart Jellyfin twee keer (1x om de plugin te laden, 1x na het opslaan
    van de configuratie zodat de web-injectie wordt toegepast).
@@ -392,7 +395,7 @@ Deze repo is al voorbereid:
   2. een release-zip maakt met **jprm** (Jellyfin Plugin Repository Manager),
   3. een **GitHub Release** aanmaakt met die zip als asset,
   4. `repository/manifest.json` bijwerkt (versie, checksum, download-URL) en
-     terug commit naar `main`.
+     terug commit naar `master`.
 - `repository/manifest.json` — start leeg (`[]`), wordt door de workflow
   gevuld.
 
@@ -406,9 +409,9 @@ Deze repo is al voorbereid:
    cd c:\Users\Jesse\Desktop\jellinet
    git add .
    git commit -m "Initial commit: Netflix Rows plugin"
-   git branch -M main
+   git branch -M master
    git remote add origin https://github.com/<gebruiker>/<repo>.git
-   git push -u origin main
+   git push -u origin master
    ```
 
 3. **Maak een release-tag** (versie moet matchen met `version` in
@@ -420,13 +423,13 @@ Deze repo is al voorbereid:
    ```
 
 4. Wacht tot de **Actions**-run groen is (tab "Actions" op GitHub). Daarna
-   bevat `repository/manifest.json` op `main` een geldige entry met
+   bevat `repository/manifest.json` op `master` een geldige entry met
    download-URL + checksum, en staat de `.zip` als asset onder
    **Releases**.
 5. **Deel deze URL** met gebruikers:
 
    ```
-   https://raw.githubusercontent.com/<gebruiker>/<repo>/main/repository/manifest.json
+   https://raw.githubusercontent.com/<gebruiker>/<repo>/master/repository/manifest.json
    ```
 
    Zij voegen die toe via **Dashboard → Plugins → Repositories → Add
@@ -436,7 +439,7 @@ Deze repo is al voorbereid:
 
 1. Verhoog `version` in `src/Jellyfin.Plugin.NetflixRows/build.yaml` (en in
    `Plugin.cs`-assembly-versie indien je die ook gebruikt).
-2. Commit, push naar `main`.
+2. Commit, push naar `master`.
 3. Tag de nieuwe versie (`git tag v1.0.1.0 && git push origin v1.0.1.0`).
 4. De workflow voegt automatisch een nieuwe entry toe aan
    `repository/manifest.json` — bestaande gebruikers zien de update in

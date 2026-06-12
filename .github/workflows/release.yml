@@ -5,9 +5,9 @@ name: Build and release plugin
 #   git push origin v1.0.0.0
 #
 # Builds the plugin, attaches the zip to a GitHub Release, and updates
-# repository/manifest.json on the main branch so it can be used directly as
+# repository/manifest.json on the master branch so it can be used directly as
 # a Jellyfin plugin repository URL:
-#   https://raw.githubusercontent.com/<user>/<repo>/main/repository/manifest.json
+#   https://raw.githubusercontent.com/<user>/<repo>/master/repository/manifest.json
 on:
   push:
     tags:
@@ -20,10 +20,10 @@ jobs:
   build-and-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main
+      - name: Checkout master
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: master
           fetch-depth: 0
 
       - name: Setup .NET
@@ -76,4 +76,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add repository/manifest.json
           git diff --cached --quiet || git commit -m "Update plugin repository manifest for ${{ github.ref_name }}"
-          git push origin main
+          git push origin master
