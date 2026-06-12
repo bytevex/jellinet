@@ -1,7 +1,4 @@
-define(['baseView'], function () {
-    'use strict';
-
-    var PluginId = 'a1b2c3d4-e5f6-4789-a012-b3c4d5e6f7a8';
+var PluginId = 'a1b2c3d4-e5f6-4789-a012-b3c4d5e6f7a8';
 
     var MediaTypeOptions = [
         { value: 0, label: 'Films' },
@@ -97,7 +94,8 @@ define(['baseView'], function () {
         });
     }
 
-    return function (view) {
+export default class NetflixRowsConfigPage {
+    constructor(view) {
         var rowsContainer = view.querySelector('#RowsContainer');
         var addRowButton = view.querySelector('#AddRowButton');
         var libraryContainer = view.querySelector('#LibraryCheckboxes');
@@ -201,5 +199,7 @@ define(['baseView'], function () {
         });
 
         view.addEventListener('viewshow', loadData);
-    };
-});
+
+        loadData();
+    }
+}

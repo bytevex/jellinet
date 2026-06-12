@@ -1,6 +1,6 @@
 name: "Netflix Rows"
 guid: "a1b2c3d4-e5f6-4789-a012-b3c4d5e6f7a8"
-version: "1.0.3.0"
+version: "1.0.4.0"
 targetAbi: "10.11.0.0"
 framework: "net9.0"
 owner: "bytevex"
@@ -15,6 +15,13 @@ category: "General"
 artifacts:
   - "Jellyfin.Plugin.NetflixRows.dll"
 changelog: |
+  ## 1.0.4.0
+  - Fix config page niet functioneel in Jellyfin 10.11.x: de moderne web-client
+    laadt config-page controllers via een ES module dynamic import met een
+    `data-controller` attribuut (geen RequireJS `define()` en geen `viewshow`
+    event meer). configPage.js omgezet naar `export default class` en
+    `data-controller` toegevoegd aan configPage.html.
+
   ## 1.0.3.0
   - Fix runtime TypeLoadException on Jellyfin 10.11.x: bumped Jellyfin.Controller
     naar 10.11.11 (net9.0), User-entity verplaatst naar
