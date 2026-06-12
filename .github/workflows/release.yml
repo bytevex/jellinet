@@ -7,7 +7,7 @@ name: Build and release plugin
 # Builds the plugin, attaches the zip to a GitHub Release, and updates
 # repository/manifest.json on the master branch so it can be used directly as
 # a Jellyfin plugin repository URL:
-#   https://raw.githubusercontent.com/<user>/<repo>/master/repository/manifest.json
+#   https://raw.githubusercontent.com/bytevex/jellinet/master/repository/manifest.json
 on:
   push:
     tags:

@@ -1,5 +1,7 @@
 # Jellyfin Netflix Rows
 
+Repository: https://github.com/bytevex/jellinet
+
 > ## ⚠️ VIBE CODED — LEES DIT EERST
 >
 > Dit project is **volledig "vibe coded"** door een AI (Claude), als experiment
@@ -245,11 +247,15 @@ MD5-checksum van de zip (`Get-FileHash -Algorithm MD5 NetflixRows_1.0.0.0.zip`).
 7. Sla op, **herstart Jellyfin nogmaals** zodat de web-injectie (`index.html`
    patch) wordt toegepast.
 
-### Optie B — Via je eigen GitHub plugin-repo (aanbevolen, zie §9)
+### Optie B — Via deze GitHub plugin-repo (aanbevolen, zie §9)
 
 1. In Jellyfin: **Dashboard → Plugins → Repositories → Add Repository**, voer
-   de **raw GitHub-URL** naar `repository/manifest.json` in, bv.:
-   `https://raw.githubusercontent.com/<gebruiker>/<repo>/master/repository/manifest.json`
+   de volgende URL in:
+
+   ```
+   https://raw.githubusercontent.com/bytevex/jellinet/master/repository/manifest.json
+   ```
+
 2. Ga naar **Catalog**, zoek "Netflix Rows" en installeer.
 3. Herstart Jellyfin twee keer (1x om de plugin te laden, 1x na het opslaan
    van de configuratie zodat de web-injectie wordt toegepast).
@@ -399,37 +405,31 @@ Deze repo is al voorbereid:
 - `repository/manifest.json` — start leeg (`[]`), wordt door de workflow
   gevuld.
 
+### Repository
+
+De code staat op: **https://github.com/bytevex/jellinet** (branch `master`).
+
 ### Stappen
 
-1. **Maak een lege GitHub-repository** aan op github.com (bv.
-   `jellyfin-plugin-netflix-rows`), zonder README/license (die heb je al).
-2. **Koppel en push** vanuit deze map:
-
-   ```powershell
-   cd c:\Users\Jesse\Desktop\jellinet
-   git add .
-   git commit -m "Initial commit: Netflix Rows plugin"
-   git branch -M master
-   git remote add origin https://github.com/<gebruiker>/<repo>.git
-   git push -u origin master
-   ```
-
-3. **Maak een release-tag** (versie moet matchen met `version` in
+1. ✅ Repo aangemaakt en code gepusht naar
+   [github.com/bytevex/jellinet](https://github.com/bytevex/jellinet) (`master`).
+2. **Maak een release-tag** (versie moet matchen met `version` in
    `src/Jellyfin.Plugin.NetflixRows/build.yaml`, met een `v`-prefix):
 
    ```powershell
+   cd c:\Users\Jesse\Desktop\jellinet
    git tag v1.0.0.0
    git push origin v1.0.0.0
    ```
 
-4. Wacht tot de **Actions**-run groen is (tab "Actions" op GitHub). Daarna
-   bevat `repository/manifest.json` op `master` een geldige entry met
-   download-URL + checksum, en staat de `.zip` als asset onder
-   **Releases**.
-5. **Deel deze URL** met gebruikers:
+3. Wacht tot de **Actions**-run groen is (tab "Actions" op
+   [github.com/bytevex/jellinet](https://github.com/bytevex/jellinet/actions)).
+   Daarna bevat `repository/manifest.json` op `master` een geldige entry met
+   download-URL + checksum, en staat de `.zip` als asset onder **Releases**.
+4. **Deel deze URL** met gebruikers:
 
    ```
-   https://raw.githubusercontent.com/<gebruiker>/<repo>/master/repository/manifest.json
+   https://raw.githubusercontent.com/bytevex/jellinet/master/repository/manifest.json
    ```
 
    Zij voegen die toe via **Dashboard → Plugins → Repositories → Add
