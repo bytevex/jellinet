@@ -1,6 +1,6 @@
 name: "Netflix Rows"
 guid: "a1b2c3d4-e5f6-4789-a012-b3c4d5e6f7a8"
-version: "1.0.5.0"
+version: "1.0.6.0"
 targetAbi: "10.11.0.0"
 framework: "net9.0"
 owner: "bytevex"
@@ -15,6 +15,17 @@ category: "General"
 artifacts:
   - "Jellyfin.Plugin.NetflixRows.dll"
 changelog: |
+  ## 1.0.6.0
+  - Fix config page 404 op de controller-import: jellyfin-web bouwt de
+    controller-URL als `configurationpage?name=<data-controller>`. Met
+    `data-controller="configurationpage?name=NetflixRowsConfigPage.js"`
+    ontstond een dubbel-genest pad (`configurationpage?name=configurationpage%3Fname%3D...`)
+    dat 404 gaf. data-controller is nu `__plugin/NetflixRowsConfigPage.js`
+    (de `__plugin/` prefix wordt door jellyfin-web gestript voordat de
+    controller-URL wordt opgebouwd). Ook het overbodige
+    `<script src="configurationpage?name=...">`-tag verwijderd, dat als
+    klassiek script een syntaxfout gaf op de ES module `export default`.
+
   ## 1.0.5.0
   - Fix: geïnstalleerde plugin toonde altijd versie 1.0.0.0 omdat de DLL geen
     AssemblyVersion meekreeg. CI stempelt nu -p:Version/-p:AssemblyVersion/
