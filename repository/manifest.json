@@ -9,6 +9,14 @@
     "imageUrl": "",
     "versions": [
       {
+        "version": "1.0.3.0",
+        "changelog": "Release 1.0.3.0 (tag v1.0.3.0)",
+        "targetAbi": "10.11.0.0",
+        "sourceUrl": "https://github.com/bytevex/jellinet/releases/download/v1.0.3.0/netflixrows_1.0.3.0.zip",
+        "checksum": "d1eefc8ad1e3405cc5a5a75cab7c5420",
+        "timestamp": "2026-06-12T10:32:56Z"
+      },
+      {
         "version": "1.0.2.0",
         "changelog": "Release 1.0.2.0 (tag v1.0.2.0)",
         "targetAbi": "10.10.0.0",
