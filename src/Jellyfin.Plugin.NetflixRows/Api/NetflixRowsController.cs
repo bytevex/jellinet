@@ -123,7 +123,7 @@ namespace Jellyfin.Plugin.NetflixRows.Api
             return File(stream, contentType);
         }
 
-        private Jellyfin.Data.Entities.User? GetCurrentUser()
+        private Jellyfin.Database.Implementations.Entities.User? GetCurrentUser()
         {
             var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))

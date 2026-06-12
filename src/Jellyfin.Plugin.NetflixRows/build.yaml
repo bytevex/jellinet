@@ -1,9 +1,9 @@
 name: "Netflix Rows"
 guid: "a1b2c3d4-e5f6-4789-a012-b3c4d5e6f7a8"
-version: "1.0.2.0"
-targetAbi: "10.10.0.0"
-framework: "net8.0"
-owner: "tywdj123"
+version: "1.0.3.0"
+targetAbi: "10.11.0.0"
+framework: "net9.0"
+owner: "bytevex"
 overview: "Genereert automatisch Netflix-stijl genre-rijen op de Jellyfin homepage."
 description: >
   Voegt automatisch dynamische genre-rijen toe aan de Jellyfin homepage
@@ -15,6 +15,12 @@ category: "General"
 artifacts:
   - "Jellyfin.Plugin.NetflixRows.dll"
 changelog: |
+  ## 1.0.3.0
+  - Fix runtime TypeLoadException on Jellyfin 10.11.x: bumped Jellyfin.Controller
+    naar 10.11.11 (net9.0), User-entity verplaatst naar
+    Jellyfin.Database.Implementations.Entities en SortOrder naar
+    Jellyfin.Database.Implementations.Enums.
+
   ## 1.0.2.0
   - CI: jprm vervangen door directe dotnet build + zip + jq voor het bouwen
     van de release-zip en repository/manifest.json.

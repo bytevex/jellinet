@@ -23,9 +23,9 @@ env:
   PLUGIN_OVERVIEW: "Dynamische genre-rijen (Actie, Komedie, Horror, Sci-Fi, Drama Series, Crime Series, ...) op de homepage."
   PLUGIN_OWNER: "bytevex"
   PLUGIN_CATEGORY: "General"
-  PLUGIN_TARGET_ABI: "10.10.0.0"
+  PLUGIN_TARGET_ABI: "10.11.0.0"
   PROJECT_PATH: "src/Jellyfin.Plugin.NetflixRows/Jellyfin.Plugin.NetflixRows.csproj"
-  PUBLISH_DIR: "src/Jellyfin.Plugin.NetflixRows/bin/Release/net8.0"
+  PUBLISH_DIR: "src/Jellyfin.Plugin.NetflixRows/bin/Release/net9.0"
 
 jobs:
   build-and-release:
@@ -40,7 +40,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '9.0.x'
 
       - name: Determine version from tag
         id: version
